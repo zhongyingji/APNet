@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is the code of [Robust Partial Matching for Person Search](https://arxiv.org/). The Align-to-Part Network(APNet) is proposed to alleviate the misalignment problem occurred in pedestrian detector, facilitating the downstream re-identification task. The code is based on [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark). 
+This is the code of [Robust Partial Matching for Person Search](https://arxiv.org/) accepted in CVPR2020. The Align-to-Part Network(APNet) is proposed to alleviate the misalignment problem occurred in pedestrian detector, facilitating the downstream re-identification task. The code is based on [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark). 
 
 <div align=center>
 
