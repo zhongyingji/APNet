@@ -49,9 +49,6 @@ class ROIBoxHead_padreg(torch.nn.Module):
             targets = self.ratio_estimator.get_ratio(targets, self.training)
             proposals = targets
 
-            # for query
-            # in generalized_rcnn.py
-            # proposals is targets_cpy
         elif query:
             for target, proposal in zip(targets, proposals):
                 target.add_field("embeds", proposal.get_field("embeds"))
@@ -62,7 +59,6 @@ class ROIBoxHead_padreg(torch.nn.Module):
             # copying the keypoints
 
             # proposals = self.ratio_estimator.get_ratio(proposals, self.training)
-
 
         # for query
         # both "reg_vals" and "pad_ratio"
