@@ -79,13 +79,10 @@ class CombinedROIHeads(torch.nn.ModuleDict):
                 self.training
                 and self.cfg.MODEL.ROI_KEYPOINT_HEAD.SHARE_BOX_FEATURE_EXTRACTOR
             ):
-                #pass
                 keypoint_features = x
            
             # During training, self.box() will return the unaltered proposals as "detections"
             # this makes the API consistent during training and testing
-            #print('keypoint proposals')
-            #print(detections)
             x, detections, loss_keypoint = self.keypoint(keypoint_features, detections, targets)
             losses.update(loss_keypoint)
         
