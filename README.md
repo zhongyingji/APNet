@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is the code of [Robust Partial Matching for Person Search](https://arxiv.org/pdf/.pdf). The Align-to-Part Network(APNet) is proposed to alleviate the misalignment problem occurred in pedestrian detector, facilitating the downstream re-identification task. The code is based on [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark). 
+This is the code of [Robust Partial Matching for Person Search](https://arxiv.org/). The Align-to-Part Network(APNet) is proposed to alleviate the misalignment problem occurred in pedestrian detector, facilitating the downstream re-identification task. The code is based on [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark). 
 
 <div align=center>
 
@@ -60,7 +60,7 @@ You can alter the scripts in `train.sh` in the following aspects:
 
 1. We train OIM on 2 GPUS with batchsize 4. If you encounter out-of-memory (OOM) error, reduce the batchsize by setting `SOLVER.IMS_PER_BATCH` to a smaller number. 
 
-2. If you want to use one GPU, replace the command of OIM with single GPU training script:
+2. If you want to use 1 GPU, replace the command of OIM with single GPU training script:
 
 ```bash
 python tools/train_net.py --config-file "configs/reid/prw_R_50_C4.yaml" SOLVER.IMS_PER_BATCH 2 TEST.IMS_PER_BATCH 8 OUTPUT_DIR "models/prw_oim"
