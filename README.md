@@ -53,6 +53,7 @@ APNet composes of three modules, [OIM](https://arxiv.org/pdf/1604.01850), RSFE a
 ```
 
 which contains the training scripts of the three modules. 
+
 **NOTE:** Both RSFE and BBA are required to be intialised with the trained OIM. For more details, please check `train.sh`. 
 
 You can alter the scripts in `train.sh` in the following aspects:
