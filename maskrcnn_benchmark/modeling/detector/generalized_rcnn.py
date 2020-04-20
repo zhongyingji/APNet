@@ -51,16 +51,11 @@ class GeneralizedRCNN(nn.Module):
         images = to_image_list(images)
         features = self.backbone(images.tensors)
         proposals, proposal_losses = self.rpn(images, features, targets)
-        #print(proposals)
     
     
 
         if self.roi_heads:
             if not self.training and query:
-                #gpu_device = torch.device("cuda")
-                #print(targets)
-                #targets_cpy = targets[:]
-                #targets_cpy = [o.to(gpu_device) for o in targets_cpy]
                 x, result, detector_losses = self.roi_heads(features, targets, targets, query)
             else:
                 x, result, detector_losses = self.roi_heads(features, proposals, targets)

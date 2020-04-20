@@ -29,15 +29,7 @@ class CombinedROIHeads(torch.nn.ModuleDict):
         if not self.training or not (self.cfg.MODEL.REID.TRAIN_PART or self.cfg.MODEL.REID.TRAIN_PADREG):
             x, detections, loss_box = self.box(features, proposals, targets, query)
             losses.update(loss_box)
-        # if query
-        # proposals is targets!!!
-
-        # when training
-        # the proposals(detections) is the 128 filtered from RPN
-
-        # when testing
-        # the detections is the ultimate result (post_processed) 
-
+       
 
         if self.cfg.MODEL.BOX_PADREG_ON:
             loss_box_pad_reg = {}

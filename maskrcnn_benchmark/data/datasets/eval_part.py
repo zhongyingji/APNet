@@ -39,7 +39,6 @@ def eval_part(dataset, predictions, qdataset, query_predictions, output_folder, 
         det_feat_part = prediction.get_field("part_embeds")
 
         det_feat = torch.cat([det_feat_g, (1./n_parts)*det_feat_part], dim=1)
-        # det_feat = torch.cat([det_feat_g, det_feat_part], dim=1)
         det_feat = np.array(det_feat)
 
         pids = np.array(gt_bboxlist.get_field("ids"))
@@ -65,7 +64,6 @@ def eval_part(dataset, predictions, qdataset, query_predictions, output_folder, 
         qfeat_g = qpred.get_field("embeds")
         qfeat_part = qpred.get_field("part_embeds")
         qfeat = torch.cat([qfeat_g, (1./n_parts)*qfeat_part], dim=1)
-        # qfeat = torch.cat([qfeat_g, qfeat_part], dim=1)
         qimgname = qpred.get_field("imgname")
         
         q_feat.append(qfeat)
@@ -82,7 +80,6 @@ def eval_part(dataset, predictions, qdataset, query_predictions, output_folder, 
     topk = [1, 5, 10]
 
     for i in tqdm(range(q_feat.shape[0])):
-        # if i == 3: break
 
         y_true, y_score = [], []
         imgs, rois = [], []
@@ -91,9 +88,6 @@ def eval_part(dataset, predictions, qdataset, query_predictions, output_folder, 
         feat_p = q_feat[i, :]
         probe_imgname = qdataset.frame[q_imgname[i]]
 
-
-        #print('###')
-        #print(probe_imgname)
         
         probe_pid = q_id[i]
 

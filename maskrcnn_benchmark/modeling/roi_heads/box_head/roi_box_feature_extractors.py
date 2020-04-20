@@ -41,11 +41,7 @@ class ResNet50Conv5ROIFeatureExtractor(nn.Module):
         self.out_channels = head.out_channels
 
     def forward(self, x, proposals):
-        #print('altered!!!')
-        #print(proposals)
-        
         x = self.pooler(x, proposals)
-        #print('OKKKKKKKKKs')
         x = self.head(x)
         return x
 

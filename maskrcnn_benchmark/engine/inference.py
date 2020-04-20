@@ -18,7 +18,6 @@ def compute_on_dataset(model, data_loader, device, timer=None):
     model.eval()
     results_dict = {}
     cpu_device = torch.device("cpu")
-    z = 0
     for _, batch in enumerate(tqdm(data_loader)):
         
         images, targets, image_ids = batch
@@ -48,11 +47,8 @@ def compute_on_dataset_query(model, data_loader, device, timer=None):
     model.eval()
     results_dict = {}
     cpu_device = torch.device("cpu")
-    z = 0
     for _, batch in enumerate(tqdm(data_loader)):
         images, targets, image_ids = batch
-        #print('%$#!@s')
-        #print(images)
         images = images.to(device)
         targets = [target.to(device) for target in targets]
         with torch.no_grad():
@@ -114,7 +110,7 @@ def inference(
     dataset = data_loader.dataset
     
 
-    """
+    
     logger.info("Start evaluation on {} dataset({} images).".format(dataset_name, len(dataset)))
     total_timer = Timer()
     inference_timer = Timer()
@@ -145,9 +141,9 @@ def inference(
     if output_folder:
         torch.save(predictions, os.path.join(output_folder, "predictions.pth"))
 
-    """
+    
 
-    predictions = torch.load(os.path.join(output_folder, "predictions.pth"))
+    # predictions = torch.load(os.path.join(output_folder, "predictions.pth"))
 
     if not is_main_process():
         return

@@ -24,7 +24,6 @@ class FastRCNNPredictor(nn.Module):
         nn.init.normal_(self.bbox_pred.weight, mean=0, std=0.001)
         nn.init.constant_(self.bbox_pred.bias, 0)
 
-        # added by zyj
         self.embed = nn.Linear(2048, config.MODEL.REID.FEAT_DIM)
 
 
