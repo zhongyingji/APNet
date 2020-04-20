@@ -6,7 +6,7 @@ This is the code of [Robust Partial Matching for Person Search](https://arxiv.or
 
 <div align=center>
 
-![](images/apnet.png)
+![](images/APNet.png)
 
 </div>
 
