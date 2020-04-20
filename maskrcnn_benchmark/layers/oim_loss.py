@@ -2,6 +2,9 @@ import torch
 import torch.nn.functional as F
 from torch import nn, autograd
 
+
+"""Grateful for Di Chen (https://arxiv.org/abs/1807.08107) providing the implementation of OIM loss."""
+
 class OIM(autograd.Function):
 
     def __init__(self, lut, cq, header, momentum=0.5):
@@ -44,7 +47,7 @@ class OIMLoss(nn.Module):
                  weight=None, size_average=True):
         super(OIMLoss, self).__init__()
         self.num_features = num_features
-        self.num_labeled_pids = num_labeled_pids # 482 for PRW
+        self.num_labeled_pids = num_labeled_pids # 483 for PRW
         self.cq_size = cq_size
         self.momentum = momentum
         self.scalar = scalar
@@ -64,11 +67,8 @@ class OIMLoss(nn.Module):
    
         
         unlab = targets < 0
-        targets[unlab] =  5555 #5555
-        """
-        if targets.size(0) == 0:
-            return torch.tensor(0, dtype=torch.float32).to(inputs.device), inputs
-        """
+        targets[unlab] =  5555
+  
         inputs = oim(inputs, targets, self.lut, self.cq,
                      self.header_cq, momentum=self.momentum)
         inputs *= self.scalar

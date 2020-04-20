@@ -1,80 +1,3 @@
-"""
-from __future__ import absolute_import
-
-import torch
-import torch.nn.functional as F
-from torch import nn, autograd
-
-
-class OIM(autograd.Function):
-    def __init__(self, lut, cq, momentum=0.5):
-        super(OIM, self).__init__()
-        self.lut = lut
-        self.cq = cq
-        self.momentum = momentum
-
-    def forward(self, inputs, targets):
-        self.save_for_backward(inputs, targets)
-        #print(inputs.shape, self.lut.shape)
-        outputs_labeled = inputs.mm(self.lut.t())
-        outputs_unlabeled = inputs.mm(self.cq.t())
-
-        return torch.cat([outputs_labeled, outputs_unlabeled], dim=1)
-
-    def backward(self, grad_outputs):
-        inputs, targets = self.saved_tensors
-        grad_inputs = None
-        if self.needs_input_grad[0]:
-            grad_inputs = grad_outputs.mm(torch.cat([self.lut, self.cq], dim=0))
-
-        for x, y in zip(inputs, targets):
-            if y < len(self.lut):
-                self.lut[y] = self.momentum * self.lut[y] + (1. - self.momentum) * x
-                self.lut[y] /= self.lut[y].norm()
-            else:
-                tmp = torch.cat([self.cq[1:], x.view(-1, x.size(0))], dim=0)
-                self.cq[:, :] = tmp[:, :]
-        return grad_inputs, None
-
-
-def oim(inputs, targets, lut, cq, momentum=0.5):
-    return OIM(lut, cq, momentum=momentum)(inputs, targets)
-
-
-class OIMLoss(nn.Module):
-    def __init__(self, num_features, num_classes, num_unlabeled=5000, scalar=30, momentum=0.5,
-                 weight=None, size_average=True):
-        super(OIMLoss, self).__init__()
-        self.num_features = num_features
-        self.num_classes = num_classes
-        self.num_unlabeled = num_unlabeled
-        self.momentum = momentum
-        self.scalar = scalar
-        self.weight = weight if weight is not None else \
-            torch.cat([torch.ones(num_classes), torch.zeros(num_unlabeled)]).cuda()
-
-        self.size_average = size_average
-
-        self.register_buffer('lut', torch.zeros(num_classes, num_features))
-        self.register_buffer('cq', torch.zeros(num_unlabeled, num_features))
-
-    def forward(self, inputs, targets):
-        unlab = targets < 0
-        targets[unlab] = torch.randint(low=len(self.lut), high=len(self.lut) + self.num_unlabeled,
-                                       size=(unlab.sum().item(),)).long().cuda()
-        # targets for unblabled sample is assigned a random integer between num_classes and num_classes+num_unlabeled
-        inputs = oim(inputs, targets, self.lut, self.cq, momentum=self.momentum)
-        inputs *= self.scalar
-
-
-        loss = F.cross_entropy(inputs, targets, weight=self.weight,
-                               size_average=self.size_average)
-
-        return loss, inputs
-
-
-"""
-
 import torch
 import torch.nn.functional as F
 from torch import nn, autograd
@@ -125,7 +48,7 @@ class OIMLoss_Part(nn.Module):
                  weight=None, size_average=True):
         super(OIMLoss_Part, self).__init__()
         self.num_features = num_features
-        self.num_labeled_pids = num_labeled_pids # 482 for PRW
+        self.num_labeled_pids = num_labeled_pids
         self.cq_size = cq_size
         self.momentum = momentum
         self.scalar = scalar
