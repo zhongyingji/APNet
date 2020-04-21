@@ -94,9 +94,10 @@ def eval_part_regressor(dataset, predictions, qdataset, query_predictions, outpu
     q_feat_part = np.concatenate(q_feat_part, axis=0)
     q_id = np.array(q_id)
     q_imgname = np.array(q_imgname)
-    q_pad = np.array(q_pad)
+    q_pad = np.array(q_pad) # ensure q_pad has already been decoded
     q_reg = np.array(q_reg)
     q_reg = est_decode(q_reg)
+    
 
     q_feat_part = q_feat_part[:, :n_parts*FEAT_DIM]
     logger.info(
@@ -152,6 +153,10 @@ def eval_part_regressor(dataset, predictions, qdataset, query_predictions, outpu
                 feat_p_p: regval_p_gt/regval_p_reg
                 feat_g_p: feat_regval_g
             """
+            # TODO: remove regval_p_reg
+            # if query_pad_by_gt is on, regval_p_gt/regval_p_reg are different
+            # if query_pad_by_gt is off, regval_p_gt/regval_p_reg are identical, both are estimated
+            # check maskrcnn_benchmark/modeling/roi_heads/box_head/completeness_part.py, get_ratio_by_est
             feat_regval_p = regval_p_gt
     
 
